@@ -14,13 +14,13 @@ void TCPConnection::start() {
 }
 
 void TCPConnection::asyncRead() {
-    boost::asio::async_read_until(socket, streamBuf, "\n", [self = shared_from_this()](const boost::system::error_code& errorC, size_t bytesTransferred) {
+    boost::asio::async_read_until(socket, readBuffer, "\n", [self = shared_from_this()](const boost::system::error_code& errorC, size_t bytesTransferred) {
 
         if (errorC) { self->socket.close(); return; }
 
         std::stringstream  message;
-        message << std::istream(&self->streamBuf).rdbuf();
-        //streamBuf.consume(bytesTransferred);
+        message << std::istream(&self->readBuffer).rdbuf();
+        //readBuffer.consume(bytesTransferred);
 
         self->messageHandler(message.str());
         self->asyncRead();

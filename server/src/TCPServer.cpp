@@ -13,7 +13,7 @@ TCPServer::TCPServer(int port) : acceptor(ioContext, tcp::endpoint(tcp::v4(), po
 
 bool TCPServer::run() {
     try {
-        startAccept();
+        asyncAccept();
         ioContext.run();
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
@@ -30,7 +30,7 @@ void TCPServer::broadcast(const std::string& message, const int connectionIndex)
     }
 }
 
-void TCPServer::startAccept() {
+void TCPServer::asyncAccept() {
 
     tmpSocket.emplace(ioContext);
 
@@ -49,7 +49,7 @@ void TCPServer::startAccept() {
             );
             connection->start();
         }
-        startAccept();
+        asyncAccept();
     });
 }
 

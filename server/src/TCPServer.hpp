@@ -17,7 +17,7 @@ public:
     void broadcast(const std::string& message, const int connectionIndex);
 
 private:
-    void startAccept();
+    void asyncAccept();
 
 private:
     boost::asio::io_context ioContext;

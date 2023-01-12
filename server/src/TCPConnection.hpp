@@ -32,10 +32,8 @@ private:
 
 private:
     tcp::socket socket;
-
     std::queue<std::string> outgoingMessages;
-    boost::asio::streambuf streamBuf {65536};
-
+    boost::asio::streambuf readBuffer {65536};
     std::function<void(std::string)> messageHandler;
 };
 
