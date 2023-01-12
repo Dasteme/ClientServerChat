@@ -16,7 +16,7 @@ void TCPConnection::start() {
 void TCPConnection::asyncRead() {
     boost::asio::async_read_until(socket, readBuffer, "\n", [self = shared_from_this()](const boost::system::error_code& errorC, size_t bytesTransferred) {
 
-        if (errorC) { self->socket.close(); return; }
+        if (errorC) { self->socket.close(); std::cout << "User has left!\n"; return; }
 
         std::stringstream  message;
         message << std::istream(&self->readBuffer).rdbuf();
@@ -35,7 +35,7 @@ void TCPConnection::sendMessage(const std::string &message) {
 void TCPConnection::asyncWrite() {
     boost::asio::async_write(socket, boost::asio::buffer(outgoingMessages.front()), [self = shared_from_this()](const boost::system::error_code& errorC, size_t bytesTransferred) {
 
-        if (errorC) {self->socket.close(); return;}
+        if (errorC) {self->socket.close(); std::cout << "User has left!\n"; return;}
 
         self->outgoingMessages.pop();
         if (!self->outgoingMessages.empty()) {
